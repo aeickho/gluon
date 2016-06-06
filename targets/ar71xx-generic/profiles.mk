@@ -203,10 +203,11 @@ endif
 
 ## D-Link
 
-# D-Link DIR-505 rev. A1
+# D-Link DIR-505 rev. A1/A2
 
 $(eval $(call GluonProfile,DIR505A1))
 $(eval $(call GluonModel,DIR505A1,dir-505-a1,d-link-dir-505-rev-a1))
+$(eval $(call GluonModelAlias,DIR505A1,d-link-dir-505-rev-a1,d-link-dir-505-rev-a2))
 
 # D-Link DIR-615 rev. C1
 $(eval $(call GluonProfile,DIR615C1))
@@ -265,6 +266,14 @@ $(eval $(call GluonModel,WNDR3700,wndrmac,netgear-wndrmac)) # BROKEN: untested
 endif
 $(eval $(call GluonModel,WNDR3700,wndrmacv2,netgear-wndrmacv2))
 
+ifneq ($(BROKEN),)
+# WNR2200
+$(eval $(call GluonProfile,WNR2200)) # BROKEN: untested
+$(eval $(call GluonModel,WNR2200,wnr2200,netgear-wnr2200))
+$(eval $(call GluonProfileFactorySuffix,WNR2200,.img))
+endif
+
+
 ## Allnet
 
 # ALL0315N
@@ -297,32 +306,37 @@ $(eval $(call GluonModel,OMEGA,onion-omega,onion-omega))
 
 ## OpenMesh
 
+# MR1750
+$(eval $(call GluonProfile,MR1750,om-watchdog uboot-envtools kmod-ath10k ath10k-firmware-qca988x-ct))
+$(eval $(call GluonModel,MR1750,mr1750,openmesh-mr1750))
+
 # MR600
 $(eval $(call GluonProfile,MR600,om-watchdog uboot-envtools))
-$(eval $(call GluonProfileSysupgradeSuffix,MR600,-squashfs-factory,.bin))
 $(eval $(call GluonModel,MR600,mr600,openmesh-mr600))
-$(eval $(call GluonModelAlias,MR600,openmesh-mr600,openmesh-mr600-v2))
+$(eval $(call GluonModelAlias,MR600,openmesh-mr600,openmesh-mr600v2))
 
 # MR900
 $(eval $(call GluonProfile,MR900,om-watchdog uboot-envtools))
-$(eval $(call GluonProfileSysupgradeSuffix,MR900,-squashfs-factory,.bin))
 $(eval $(call GluonModel,MR900,mr900,openmesh-mr900))
-$(eval $(call GluonModelAlias,MR900,openmesh-mr900,openmesh-mr900-v2))
+$(eval $(call GluonModelAlias,MR900,openmesh-mr900,openmesh-mr900v2))
 
 # OM2P
 $(eval $(call GluonProfile,OM2P,om-watchdog uboot-envtools))
-$(eval $(call GluonProfileSysupgradeSuffix,OM2P,-squashfs-factory,.bin))
 $(eval $(call GluonModel,OM2P,om2p,openmesh-om2p))
-$(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-v2))
+$(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2pv2))
 $(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-hs))
-$(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-hs-v2))
+$(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-hsv2))
 $(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-lc))
 
 # OM5P
 $(eval $(call GluonProfile,OM5P,om-watchdog uboot-envtools))
-$(eval $(call GluonProfileSysupgradeSuffix,OM5P,-squashfs-factory,.bin))
 $(eval $(call GluonModel,OM5P,om5p,openmesh-om5p))
 $(eval $(call GluonModelAlias,OM5P,openmesh-om5p,openmesh-om5p-an))
+
+# OM5P-AC
+$(eval $(call GluonProfile,OM5PAC,om-watchdog uboot-envtools kmod-ath10k ath10k-firmware-qca988x-ct))
+$(eval $(call GluonModel,OM5PAC,om5pac,openmesh-om5p-ac))
+$(eval $(call GluonModelAlias,OM5PAC,openmesh-om5p-ac,openmesh-om5p-acv2))
 
 ## ALFA
 

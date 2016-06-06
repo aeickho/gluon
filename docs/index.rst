@@ -61,6 +61,7 @@ Releases
 .. toctree::
    :maxdepth: 1
 
+   releases/v2016.1.5
    releases/v2016.1.4
    releases/v2016.1.3
    releases/v2016.1.2
@@ -107,7 +108,7 @@ ar71xx-generic
 
 * D-Link
 
-  - DIR-505 (A1)
+  - DIR-505 (A1, A2)
   - DIR-615 (C1)
   - DIR-825 (B1)
 
@@ -132,12 +133,14 @@ ar71xx-generic
 
 * OpenMesh
 
+ - MR1750
  - MR600 (v1, v2)
  - MR900 (v1, v2)
  - OM2P (v1, v2)
  - OM2P-HS (v1, v2)
  - OM2P-LC
  - OM5P
+ - OM5P-AC (v1, v2)
  - OM5P-AN
 
 * TP-Link
