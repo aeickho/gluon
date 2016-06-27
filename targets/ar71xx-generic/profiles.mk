@@ -4,15 +4,14 @@
 
 # CPE210/220/510/520
 $(eval $(call GluonProfile,CPE510,rssileds))
+$(eval $(call GluonModel,CPE510,cpe210-220-510-520,tp-link-cpe510-v1.0))
 
-$(eval $(call GluonModel,CPE510,cpe210-220,tp-link-cpe210-v1.0))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe210-v1.0,tp-link-cpe210-v1.1))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe210-v1.0,tp-link-cpe220-v1.0))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe210-v1.0,tp-link-cpe220-v1.1))
-
-$(eval $(call GluonModel,CPE510,cpe510-520,tp-link-cpe510-v1.0))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe510-v1.1))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe210-v1.0))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe220-v1.0))
 $(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe520-v1.0))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe210-v1.1))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe220-v1.1))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe510-v1.1))
 $(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe520-v1.1))
 
 # TL-WA701N/ND v1, v2
@@ -314,6 +313,7 @@ $(eval $(call GluonModel,OMEGA,onion-omega,onion-omega))
 # MR1750
 $(eval $(call GluonProfile,MR1750,om-watchdog uboot-envtools kmod-ath10k ath10k-firmware-qca988x-ct))
 $(eval $(call GluonModel,MR1750,mr1750,openmesh-mr1750))
+$(eval $(call GluonModelAlias,MR1750,openmesh-mr1750,openmesh-mr1750v2))
 
 # MR600
 $(eval $(call GluonProfile,MR600,om-watchdog uboot-envtools))
@@ -331,6 +331,7 @@ $(eval $(call GluonModel,OM2P,om2p,openmesh-om2p))
 $(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2pv2))
 $(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-hs))
 $(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-hsv2))
+$(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-hsv3))
 $(eval $(call GluonModelAlias,OM2P,openmesh-om2p,openmesh-om2p-lc))
 
 # OM5P
