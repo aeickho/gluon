@@ -237,6 +237,10 @@ $(eval $(call GluonModel,WZRHPG450H,wzr-hp-g450h,buffalo-wzr-hp-g450h))
 $(eval $(call GluonProfile,WZRHPG300NH))
 $(eval $(call GluonModel,WZRHPG300NH,wzr-hp-g300nh,buffalo-wzr-hp-g300nh))
 
+# WZR-HP-G300NH2
+$(eval $(call GluonProfile,WZRHPG300NH2))
+$(eval $(call GluonModel,WZRHPG300NH2,wzr-hp-g300nh2,buffalo-wzr-hp-g300nh2))
+
 # WZR-HP-AG300H (factory)
 $(eval $(call GluonProfile,WZRHPAG300H))
 $(eval $(call GluonProfileSysupgradeSuffix,WZRHPAG300H))
@@ -347,13 +351,19 @@ $(eval $(call GluonProfile,OM5PAC,om-watchdog uboot-envtools kmod-ath10k-ct ath1
 $(eval $(call GluonModel,OM5PAC,om5pac,openmesh-om5p-ac))
 $(eval $(call GluonModelAlias,OM5PAC,openmesh-om5p-ac,openmesh-om5p-acv2))
 
-## ALFA
+## ALFA NETWORK
 
 # Hornet-UB
 $(eval $(call GluonProfile,HORNETUB))
-$(eval $(call GluonModel,HORNETUB,hornet-ub,alfa-hornet-ub))
-$(eval $(call GluonModelAlias,HORNETUB,alfa-hornet-ub,alfa-ap121))
-$(eval $(call GluonModelAlias,HORNETUB,alfa-hornet-ub,alfa-ap121u))
+$(eval $(call GluonModel,HORNETUB,hornet-ub,alfa-network-hornet-ub))
+$(eval $(call GluonModelAlias,HORNETUB,alfa-network-hornet-ub,alfa-network-ap121))
+$(eval $(call GluonModelAlias,HORNETUB,alfa-network-hornet-ub,alfa-network-ap121u))
+
+ifneq ($(BROKEN),)
+# Tube2H
+$(eval $(call GluonProfile,TUBE2H))
+$(eval $(call GluonModel,TUBE2H,tube2h-8M,alfa-network-tube2h)) # BROKEN: needs more testing
+endif
 
 ## Meraki
 
