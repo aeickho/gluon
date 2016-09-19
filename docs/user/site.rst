@@ -21,11 +21,13 @@ site_code
     The code of your community. It is good practice to use the TLD of
     your community here.
 
-prefix4
+prefix4 \: optional
     The IPv4 Subnet of your community mesh network in CIDR notation, e.g.
     ::
 
        prefix4 = '10.111.111.0/18'
+
+    Required if ``next_node.ip4`` is set.
 
 prefix6
     The IPv6 subnet of your community mesh network, e.g.
@@ -98,6 +100,12 @@ wifi24 \: optional
     This will only affect new installations.
     Upgrades will not changed the disabled state.
 
+    Additionally it is possible to configure the ``supported_rates`` and ``basic_rate``
+    of each radio. Both are optional, by default hostapd/driver dictate the rates.
+    If ``supported_rates`` is set, ``basic_rate`` is required, because ``basic_rate``
+    has to be a subset of ``supported_rates``.
+    The example below disables 802.11b rates.
+
     ``ap`` requires a single parameter, a string, named ``ssid`` which sets the
     interface's ESSID.
 
@@ -112,6 +120,8 @@ wifi24 \: optional
 
        wifi24 = {
          channel = 11,
+         supported_rates = {6000, 9000, 12000, 18000, 24000, 36000, 48000, 54000},
+         basic_rate = {6000, 9000, 18000, 36000, 54000},
          ap = {
            ssid = 'entenhausen.freifunk.net',
          },
@@ -138,6 +148,8 @@ next_node \: package
         ip6 = 'fdca:ffee:babe:1::1',
         mac = 'ca:ff:ee:ba:be:00'
       }
+
+    The IPv4 next-node address is optional.
 
 mesh \: optional
     Options specific to routing protocols.
@@ -326,6 +338,10 @@ GLUON_PRIORITY
     The default priority for the generated manifests (see the autoupdater documentation
     for more information).
 
+GLUON_REGION
+    Region code to build into images where necessary. Valid values are the empty string,
+    ``us`` and ``eu``.
+
 GLUON_LANGS
     List of languages (as two-letter-codes) to be included in the web interface. Should always contain
     ``en``.
@@ -439,20 +455,31 @@ This is a non-exhaustive list of site-repos from various communities:
 * `site-ffbs <https://github.com/ffbs/site-ffbs>`_ (Braunschweig)
 * `site-ffhb <https://github.com/FreifunkBremen/gluon-site-ffhb>`_ (Bremen)
 * `site-ffda <https://github.com/freifunk-darmstadt/site-ffda>`_ (Darmstadt)
+* `site-ffeh <https://github.com/freifunk-ehingen/site-ffeh>`_ (Ehingen)
+* `site-fffl <https://github.com/freifunk-flensburg/site-fffl>`_ (Flensburg)
 * `site-ffgoe <https://github.com/freifunk-goettingen/site-ffgoe>`_ (Göttingen)
+* `site-ffgt-rhw <https://github.com/ffgtso/site-ffgt-rhw>`_ (Guetersloh)
 * `site-ffhh <https://github.com/freifunkhamburg/site-ffhh>`_ (Hamburg)
 * `site-ffho <https://git.c3pb.de/freifunk-pb/site-ffho>`_ (Hochstift)
 * `site-ffhgw <https://github.com/lorenzo-greifswald/site-ffhgw>`_ (Greifswald)
+* `site-ffka <https://github.com/ffka/site-ffka>`_ (Karlsruhe)
+* `site-ffki <http://git.freifunk.in-kiel.de/ffki-site/>`_ (Kiel)
+* `site-fflz <https://github.com/freifunk-lausitz/site-fflz>`_ (Lausitz)
 * `site-ffl <https://github.com/freifunk-leipzig/freifunk-gluon-leipzig>`_ (Leipzig)
 * `site-ffhl <https://github.com/freifunk-luebeck/site-ffhl>`_ (Lübeck)
+* `site-fflg <https://github.com/kartenkarsten/site-fflg>`_ (Lüneburg)
 * `site-ffmd <https://github.com/FreifunkMD/site-ffmd>`_ (Magdeburg)
 * `site-ffmwu <https://github.com/freifunk-mwu/site-ffmwu>`_ (Mainz, Wiesbaden & Umgebung)
 * `site-ffmyk <https://github.com/FreifunkMYK/site-ffmyk>`_ (Mayen-Koblenz)
+* `site-ffmo <https://github.com/ffruhr/site-ffmo>`_ (Moers)
+* `site-ffmg <https://github.com/ffruhr/site-ffmg>`_ (Mönchengladbach)
 * `site-ffm <https://github.com/freifunkMUC/site-ffm>`_ (München)
+* `site-ffhmue <https://github.com/Freifunk-Muenden/site-conf>`_ (Münden)
 * `site-ffms <https://github.com/FreiFunkMuenster/site-ffms>`_ (Münsterland)
+* `site-neuss <https://github.com/ffne/site-neuss>`_ (Neuss)
+* `site-ffniers <https://github.com/ffruhr/site-ffniers>`_ (Niersufer)
 * `site-ffnw <https://git.nordwest.freifunk.net/ffnw-firmware/siteconf/tree/master>`_ (Nordwest)
-* `site-ffka <https://github.com/ffka/site-ffka>`_ (Karlsruhe)
-* `site-ffrl <https://github.com/ffrl/sites-ffrl>`_ (Rheinland)
-* `site-ffrg <https://github.com/ffruhr/site-ffruhr>`_ (Ruhrgebiet)
+* `site-ffrgb <https://github.com/ffrgb/site-ffrgb>`_ (Regensburg)
+* `site-ffruhr <https://github.com/ffruhr?utf8=✓&query=site>`_ (Ruhrgebiet, Multi-Communities)
 * `site-ffs <https://github.com/freifunk-stuttgart/site-ffs>`_ (Stuttgart)
 * `site-fftr <https://github.com/freifunktrier/site-fftr>`_ (Trier)

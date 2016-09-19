@@ -1,17 +1,27 @@
 # List of hardware profiles
 
+ATH10K_FIRMWARE :=
+
+ifeq ($(GLUON_ATH10K_MESH),11s)
+ATH10K_FIRMWARE := ath10k-firmware-qca988x-11s
+endif
+ifeq ($(GLUON_ATH10K_MESH),ibss)
+ATH10K_FIRMWARE := ath10k-firmware-qca988x-ct
+endif
+
 ## TP-Link
 
 # CPE210/220/510/520
 $(eval $(call GluonProfile,CPE510,rssileds))
-$(eval $(call GluonModel,CPE510,cpe210-220-510-520,tp-link-cpe510-v1.0))
 
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe210-v1.0))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe220-v1.0))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe520-v1.0))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe210-v1.1))
-$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe220-v1.1))
+$(eval $(call GluonModel,CPE510,cpe210-220,tp-link-cpe210-v1.0))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe210-v1.0,tp-link-cpe210-v1.1))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe210-v1.0,tp-link-cpe220-v1.0))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe210-v1.0,tp-link-cpe220-v1.1))
+
+$(eval $(call GluonModel,CPE510,cpe510-520,tp-link-cpe510-v1.0))
 $(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe510-v1.1))
+$(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe520-v1.0))
 $(eval $(call GluonModelAlias,CPE510,tp-link-cpe510-v1.0,tp-link-cpe520-v1.1))
 
 # TL-WA701N/ND v1, v2
@@ -52,10 +62,13 @@ $(eval $(call GluonProfile,TLWR743))
 $(eval $(call GluonModel,TLWR743,tl-wr743nd-v1,tp-link-tl-wr743n-nd-v1))
 $(eval $(call GluonModel,TLWR743,tl-wr743nd-v2,tp-link-tl-wr743n-nd-v2))
 
-# TL-WR801N/ND v1, v2
+# TL-WR801N/ND v1, v2, v3
 $(eval $(call GluonProfile,TLWA801))
 $(eval $(call GluonModel,TLWA801,tl-wa801nd-v1,tp-link-tl-wa801n-nd-v1))
 $(eval $(call GluonModel,TLWA801,tl-wa801nd-v2,tp-link-tl-wa801n-nd-v2))
+ifneq ($(BROKEN),)
+$(eval $(call GluonModel,TLWA801,tl-wa801nd-v3,tp-link-tl-wa801n-nd-v3)) # BROKEN: untested
+endif
 
 # TL-WR841N/ND v3, v5, v7, v8, v9, v10, v11
 $(eval $(call GluonProfile,TLWR841))
@@ -71,9 +84,7 @@ $(eval $(call GluonModel,TLWR841,tl-wr841n-v11,tp-link-tl-wr841n-nd-v11))
 $(eval $(call GluonProfile,TLWR842))
 $(eval $(call GluonModel,TLWR842,tl-wr842n-v1,tp-link-tl-wr842n-nd-v1))
 $(eval $(call GluonModel,TLWR842,tl-wr842n-v2,tp-link-tl-wr842n-nd-v2))
-ifneq ($(BROKEN),)
-$(eval $(call GluonModel,TLWR842,tl-wr842n-v3,tp-link-tl-wr842n-nd-v3)) # BROKEN: untested
-endif
+$(eval $(call GluonModel,TLWR842,tl-wr842n-v3,tp-link-tl-wr842n-nd-v3))
 
 # TL-WR843N/ND v1
 $(eval $(call GluonProfile,TLWR843))
@@ -156,11 +167,15 @@ $(eval $(call GluonModel,TLMR3420,tl-mr3420-v2,tp-link-tl-mr3420-v2))
 $(eval $(call GluonProfile,TLWR2543))
 $(eval $(call GluonModel,TLWR2543,tl-wr2543-v1,tp-link-tl-wr2543n-nd-v1))
 
-ifneq ($(BROKEN),)
-# Archer C5 v1, C7 v2
-$(eval $(call GluonProfile,ARCHERC7,kmod-ath10k-ct ath10k-firmware-qca988x-ct))
-$(eval $(call GluonModel,ARCHERC7,archer-c5,tp-link-archer-c5-v1)) # BROKEN: ath10k
-$(eval $(call GluonModel,ARCHERC7,archer-c7-v2,tp-link-archer-c7-v2)) # BROKEN: ath10k
+ifneq ($(ATH10K_FIRMWARE),)
+# Archer C5 v1
+$(eval $(call GluonProfile,ARCHERC5,kmod-ath10k-ct $(ATH10K_FIRMWARE),ARCHERC7))
+$(eval $(call GluonModel,ARCHERC5,archer-c5,tp-link-archer-c5-v1))
+
+# Archer C7 v2
+$(eval $(call GluonProfile,ARCHERC7,kmod-ath10k-ct $(ATH10K_FIRMWARE)))
+$(eval $(call GluonProfileFactorySuffix,ARCHERC7,-squashfs-factory$(if $(GLUON_REGION),-$(GLUON_REGION)),.bin))
+$(eval $(call GluonModel,ARCHERC7,archer-c7-v2,tp-link-archer-c7-v2))
 endif
 
 ## Ubiquiti (almost everything)
@@ -194,14 +209,14 @@ $(eval $(call GluonModel,UBNT,ubnt-ls-sr71,ubiquiti-ls-sr71)) # BROKEN: Untested
 endif
 
 # Ubiquiti (ath10k)
-ifneq ($(BROKEN),)
-$(eval $(call GluonProfile,UBNTUNIFIACLITE,kmod-ath10k-ct ath10k-firmware-qca988x-ct))
+ifneq ($(ATH10K_FIRMWARE),)
+$(eval $(call GluonProfile,UBNTUNIFIACLITE,kmod-ath10k-ct $(ATH10K_FIRMWARE)))
 $(eval $(call GluonProfileFactorySuffix,UBNTUNIFIACLITE))
-$(eval $(call GluonModel,UBNTUNIFIACLITE,ubnt-unifiac-lite,ubiquiti-unifi-ac-lite)) # BROKEN: untested, ath10k
+$(eval $(call GluonModel,UBNTUNIFIACLITE,ubnt-unifiac-lite,ubiquiti-unifi-ac-lite))
 
-$(eval $(call GluonProfile,UBNTUNIFIACPRO,kmod-ath10k-ct ath10k-firmware-qca988x-ct))
+$(eval $(call GluonProfile,UBNTUNIFIACPRO,kmod-ath10k-ct $(ATH10K_FIRMWARE)))
 $(eval $(call GluonProfileFactorySuffix,UBNTUNIFIACPRO))
-$(eval $(call GluonModel,UBNTUNIFIACPRO,ubnt-unifiac-pro,ubiquiti-unifi-ac-pro)) # BROKEN: ath10k
+$(eval $(call GluonModel,UBNTUNIFIACPRO,ubnt-unifiac-pro,ubiquiti-unifi-ac-pro))
 endif
 
 ## D-Link
@@ -317,10 +332,12 @@ $(eval $(call GluonModel,OMEGA,onion-omega,onion-omega))
 
 ## OpenMesh
 
+ifneq ($(ATH10K_FIRMWARE),)
 # MR1750
-$(eval $(call GluonProfile,MR1750,om-watchdog uboot-envtools kmod-ath10k-ct ath10k-firmware-qca988x-ct))
+$(eval $(call GluonProfile,MR1750,om-watchdog uboot-envtools kmod-ath10k-ct $(ATH10K_FIRMWARE)))
 $(eval $(call GluonModel,MR1750,mr1750,openmesh-mr1750))
 $(eval $(call GluonModelAlias,MR1750,openmesh-mr1750,openmesh-mr1750v2))
+endif
 
 # MR600
 $(eval $(call GluonProfile,MR600,om-watchdog uboot-envtools))
@@ -346,10 +363,12 @@ $(eval $(call GluonProfile,OM5P,om-watchdog uboot-envtools))
 $(eval $(call GluonModel,OM5P,om5p,openmesh-om5p))
 $(eval $(call GluonModelAlias,OM5P,openmesh-om5p,openmesh-om5p-an))
 
+ifneq ($(ATH10K_FIRMWARE),)
 # OM5P-AC
-$(eval $(call GluonProfile,OM5PAC,om-watchdog uboot-envtools kmod-ath10k-ct ath10k-firmware-qca988x-ct))
+$(eval $(call GluonProfile,OM5PAC,om-watchdog uboot-envtools kmod-ath10k-ct $(ATH10K_FIRMWARE)))
 $(eval $(call GluonModel,OM5PAC,om5pac,openmesh-om5p-ac))
 $(eval $(call GluonModelAlias,OM5PAC,openmesh-om5p-ac,openmesh-om5p-acv2))
+endif
 
 ## ALFA NETWORK
 
@@ -362,6 +381,10 @@ $(eval $(call GluonModelAlias,HORNETUB,alfa-network-hornet-ub,alfa-network-ap121
 # Tube2H
 $(eval $(call GluonProfile,TUBE2H))
 $(eval $(call GluonModel,TUBE2H,tube2h-8M,alfa-network-tube2h))
+
+# N2/N5
+$(eval $(call GluonProfile,ALFANX))
+$(eval $(call GluonModel,ALFANX,alfa-nx,alfa-network-n2-n5))
 
 ## Meraki
 

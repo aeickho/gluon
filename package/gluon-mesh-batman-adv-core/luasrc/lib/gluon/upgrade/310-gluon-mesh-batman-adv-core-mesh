@@ -5,7 +5,6 @@ local sysctl = require 'gluon.sysctl'
 local site = require 'gluon.site_config'
 
 local uci = require('luci.model.uci').cursor()
-local lutil = require 'luci.util'
 
 
 local gw_sel_class
@@ -25,19 +24,12 @@ uci:section('batman-adv', 'mesh', 'bat0',
 )
 uci:save('batman-adv')
 
-if not uci:get('network', 'client', 'ifname') then
-  uci:add_to_set('network', 'client', 'ifname', 'bat0')
 
-  if sysconfig.lan_ifname and not site.mesh_on_lan then
-    for _, lanif in ipairs(lutil.split(sysconfig.lan_ifname, ' ')) do
-      uci:add_to_set('network', 'client', 'ifname', lanif)
-    end
-  end
-end
+uci:add_to_set('network', 'client', 'ifname', 'bat0')
 
 uci:set('network', 'client', 'proto', 'dhcpv6')
 uci:set('network', 'client', 'reqprefix', 'no')
-uci:set('network', 'client', 'igmp_snooping', 0)
+uci:delete('network', 'client', 'igmp_snooping')
 uci:set('network', 'client', 'robustness', 3)
 uci:set('network', 'client', 'query_interval', 2000)
 uci:set('network', 'client', 'query_response_interval', 500)
@@ -51,8 +43,19 @@ uci:section('network', 'interface', 'bat0',
 		    proto = 'none',
 		    macaddr = sysconfig.primary_mac,
 		    multicast_router = 2,
+		    learning = 0,
 	    }
 )
+
+uci:delete('network', 'client_lan')
+if sysconfig.lan_ifname then
+	uci:section('network', 'interface', 'client_lan',
+		    {
+			    unicast_flood = 0,
+		    }
+	)
+	uci:set('network', 'client_lan', 'ifname', sysconfig.lan_ifname)
+end
 
 uci:save('network')
 
